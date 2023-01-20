@@ -1,16 +1,13 @@
 <template>
   <div id="app">
-    <Test
-      :title="5"
-      :count="'test'"
-    />
+    <Test :title="5" :count="'test'" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue } from "vue-property-decorator";
 
-import Test from './components/Test.vue'
+import Test from "./components/Test.vue";
 
 @Component({
   components: {
@@ -18,6 +15,8 @@ import Test from './components/Test.vue'
   },
 })
 export default class App extends Vue {
-
+  $refs!: {
+    fileInput: HTMLInputElement;
+  };
 }
 </script>

@@ -1,36 +1,37 @@
-import { Project } from 'ts-morph'
+import { Project } from "ts-morph";
 
-import * as imports from './operations/imports'
-import * as vue from './operations/vue_object'
+import * as imports from "./operations/imports";
+import * as vue from "./operations/vue_object";
+import * as classToObject from "./operations/classToObject";
 
-export function declassify(project: Project, code: string, mode: 'ts' | 'vue'): string {
+export function declassify(project: Project, code: string, mode: "ts" | "vue"): string {
   switch (mode) {
-    case 'vue':
-      return declassifyVue(project, code)
+    case "vue":
+      return declassifyVue(project, code);
 
-    case 'ts':
-      return declassifyTypeScript(project, code)
+    case "ts":
+      return declassifyTypeScript(project, code);
   }
 }
 
 function declassifyVue(project: Project, code: string) {
-  const match = code.match(/<script[^>]*>\s*(?<code>.*)<\/script>/s)
+  const match = code.match(/<script[^>]*>\s*(?<code>.*)<\/script>/s);
 
   if (!match || !match.groups) {
-    throw new Error('Vue file doesn\'t seem to have a valid <script> tag.')
+    throw new Error("Vue file doesn't seem to have a valid <script> tag.");
   }
 
-  const tsCode = match.groups['code']
-  return code.replace(tsCode, declassifyTypeScript(project, tsCode))
+  const tsCode = match.groups["code"];
+  return code.replace(tsCode, declassifyTypeScript(project, tsCode));
 }
 
 function declassifyTypeScript(project: Project, code: string) {
-  const source = project.createSourceFile('test.ts', code, {
-    overwrite: true
-  })
-  
-  imports.remove(source, 'vue-class-component', 'vue-property-decorator')
-  imports.ensure(source, 'vue', { default: 'Vue' })
-  vue.classToObject(source)
-  return source.getFullText()
+  const source = project.createSourceFile("test.ts", code, {
+    overwrite: true,
+  });
+
+  imports.remove(source, "vue-class-component", "vue-property-decorator", "vuex-class");
+  imports.ensure(source, "vue", { default: "Vue" });
+  classToObject.classToObject(source);
+  return source.getFullText();
 }

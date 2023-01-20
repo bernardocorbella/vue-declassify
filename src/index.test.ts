@@ -1,7 +1,7 @@
-import test, { ExecutionContext, skip } from 'ava'
-import { IndentationText, NewLineKind, Project, QuoteKind } from 'ts-morph'
+import test, { ExecutionContext, skip } from "ava";
+import { IndentationText, NewLineKind, Project, QuoteKind } from "ts-morph";
 
-import { declassify } from './index'
+import { declassify } from "./index";
 
 const project = new Project({
   skipAddingFilesFromTsConfig: true,
@@ -15,17 +15,14 @@ const project = new Project({
     useTrailingCommas: false,
     indentationText: IndentationText.TwoSpaces,
   },
-})
+});
 
-function validate<T>(
-  context: ExecutionContext<T>, 
-  source: string, 
-  truth: string,
-  mode: 'ts' | 'vue' = 'ts',
-) {
-
-  const result = declassify(project, source.trim(), mode)
-  context.is(result.trim(), truth.trim(), `
+function validate<T>(context: ExecutionContext<T>, source: string, truth: string, mode: "ts" | "vue" = "ts") {
+  const result = declassify(project, source.trim(), mode);
+  context.is(
+    result.trim(),
+    truth.trim(),
+    `
 Truth
 =====
 
@@ -35,10 +32,11 @@ Result
 ======
 
 ${result}
-  `)
+  `
+  );
 }
 
-test('can also handle Vue SFC code', t => {
+test("can also handle Vue SFC code", (t) => {
   const source = `
 <template>
   <div />
@@ -49,7 +47,7 @@ import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export default class SFCComponent extends Vue {
-  
+
 }
 </script>
 
@@ -58,7 +56,7 @@ div {
   padding: 2px;
 }
 </style>
-  `
+  `;
 
   const truth = `
 <template>
@@ -77,53 +75,52 @@ div {
   padding: 2px;
 }
 </style>
-  `
+  `;
 
-  validate(t, source, truth, 'vue')
-})
+  validate(t, source, truth, "vue");
+});
 
-test('removes class-based component library imports', t => {
+test("removes class-based component library imports", (t) => {
   const source = `
 import { Component, Vue } from 'vue-class-component';
 import { Component, Prop, Vue } from 'vue-property-decorator';
-  `
+  `;
 
   const truth = `
 import Vue from 'vue';
-  `
+  `;
 
-  validate(t, source, truth)
-})
+  validate(t, source, truth);
+});
 
-test('only adds the Vue import if necessary', t => {
+test("only adds the Vue import if necessary", (t) => {
   const source = `
 import Vue from 'vue'
-  `
+  `;
 
-  const truth = source
-  validate(t, source, truth)
-})
+  const truth = source;
+  validate(t, source, truth);
+});
 
-test('writes the class name as the component name', t => {
+test("writes the class name as the component name", (t) => {
   const source = `
 @Component
 export default class Component extends Vue {
 
 }
-  `
+  `;
 
   const truth = `
 import Vue from 'vue';
 export default Vue.extend({
   name: 'Component',
 });
-  `
+  `;
 
-  validate(t, source, truth)
-})
+  validate(t, source, truth);
+});
 
-
-test('passes along configuration from the @Component decorator', t => {
+test("passes along configuration from the @Component decorator", (t) => {
   const source = `
 @Component({
   components: {
@@ -133,7 +130,7 @@ test('passes along configuration from the @Component decorator', t => {
 export default class Component extends Vue {
 
 }
-  `
+  `;
 
   const truth = `
 import Vue from 'vue';
@@ -143,12 +140,12 @@ export default Vue.extend({
     OtherComponent,
   },
 });
-  `
+  `;
 
-  validate(t, source, truth)
-})
+  validate(t, source, truth);
+});
 
-test('converts props with primitive types correctly', t => {
+test("converts props with primitive types correctly", (t) => {
   const source = `
 @Component
 export default class Component extends Vue {
@@ -162,7 +159,7 @@ export default class Component extends Vue {
   @Prop()
   flag?: boolean
 }
-  `
+  `;
 
   const truth = `
 import Vue from 'vue';
@@ -183,12 +180,12 @@ export default Vue.extend({
     },
   },
 });
-  `
+  `;
 
-  validate(t, source, truth)
-})
+  validate(t, source, truth);
+});
 
-test('converts prop options correctly', t => {
+test("converts prop options correctly", (t) => {
   const source = `
 @Component
 export default class Component extends Vue {
@@ -208,7 +205,7 @@ export default class Component extends Vue {
   @Prop({ default: 'Hello, world!', required: true })
   e!: boolean
 }
-  `
+  `;
 
   const truth = `
 import Vue from 'vue';
@@ -237,12 +234,12 @@ export default Vue.extend({
     },
   },
 });
-  `
+  `;
 
-  validate(t, source, truth)
-})
+  validate(t, source, truth);
+});
 
-test('converts props with non-primitive types correctly', t => {
+test("converts props with non-primitive types correctly", (t) => {
   const source = `
 @Component
 export default class Component extends Vue {
@@ -263,7 +260,7 @@ export default class Component extends Vue {
     value: number
   }
 }
-  `
+  `;
 
   const truth = `
 import Vue, { PropType } from 'vue';
@@ -292,12 +289,12 @@ export default Vue.extend({
     },
   },
 });
-  `
+  `;
 
-  validate(t, source, truth)
-})
+  validate(t, source, truth);
+});
 
-test('converts components with comments correctly', t => {
+test("converts components with comments correctly", (t) => {
   const source = `
 /**
  * This is my component!
@@ -306,7 +303,7 @@ test('converts components with comments correctly', t => {
 export default class Component extends Vue {
 
 }
-  `
+  `;
 
   const truth = `
 import Vue from 'vue';
@@ -316,25 +313,25 @@ import Vue from 'vue';
 export default Vue.extend({
   name: 'Component',
 });
-  `
+  `;
 
-  validate(t, source, truth)
-})
+  validate(t, source, truth);
+});
 
-test('converts props with comments correctly', t => {
+test("converts props with comments correctly", (t) => {
   const source = `
 @Component
 export default class Component extends Vue {
 
   /**
    * Some sort of flag.
-   * 
+   *
    * Note: This is a note.
    */
   @Prop({ required: false })
   flag?: boolean
 }
-  `
+  `;
 
   const truth = `
 import Vue from 'vue';
@@ -352,12 +349,12 @@ export default Vue.extend({
     },
   },
 });
-  `
+  `;
 
-  validate(t, source, truth)
-})
+  validate(t, source, truth);
+});
 
-test('converts simple data correctly', t => {
+test("converts simple data correctly", (t) => {
   const source = `
 @Component
 export default class Component extends Vue {
@@ -365,7 +362,7 @@ export default class Component extends Vue {
   y: string = 'test'
   z = 6
 }
-  `
+  `;
 
   const truth = `
 import Vue from 'vue';
@@ -379,18 +376,18 @@ export default Vue.extend({
     };
   },
 });
-  `
+  `;
 
-  validate(t, source, truth)
-})
+  validate(t, source, truth);
+});
 
-test('converts union-typed data correctly', t => {
+test("converts union-typed data correctly", (t) => {
   const source = `
 @Component
 export default class Component extends Vue {
   x: string | null = null
 }
-  `
+  `;
 
   const truth = `
 import Vue from 'vue';
@@ -402,12 +399,12 @@ export default Vue.extend({
     };
   },
 });
-  `
+  `;
 
-  validate(t, source, truth)
-})
+  validate(t, source, truth);
+});
 
-test('converts data comments correctly', t => {
+test("converts data comments correctly", (t) => {
   const source = `
 @Component
 export default class Component extends Vue {
@@ -419,12 +416,12 @@ export default class Component extends Vue {
 
   /**
    * Here's another one!
-   * 
+   *
    * Hope you read it all...
    */
   y = 'test'
 }
-  `
+  `;
 
   const truth = `
 import Vue from 'vue';
@@ -445,12 +442,12 @@ export default Vue.extend({
     };
   },
 });
-  `
+  `;
 
-  validate(t, source, truth)
-})
+  validate(t, source, truth);
+});
 
-test('converts computed getters correctly', t => {
+test("converts computed getters correctly", (t) => {
   const source = `
 @Component
 export default class Component extends Vue {
@@ -466,7 +463,7 @@ export default class Component extends Vue {
     return this.model.flag
   }
 }
-  `
+  `;
 
   const truth = `
 import Vue, { PropType } from 'vue';
@@ -487,12 +484,12 @@ export default Vue.extend({
     },
   },
 });
-  `
-  
-  validate(t, source, truth)
-})
+  `;
 
-test('converts computed properties correctly', t => {
+  validate(t, source, truth);
+});
+
+test("converts computed properties correctly", (t) => {
   const source = `
 @Component
 export default class Component extends Vue {
@@ -507,7 +504,7 @@ export default class Component extends Vue {
     this.count = value - 1
   }
 }
-  `
+  `;
 
   const truth = `
 import Vue from 'vue';
@@ -529,16 +526,16 @@ export default Vue.extend({
     },
   },
 });
-  `
-  
-  validate(t, source, truth)
-})
+  `;
 
-test('converts methods correctly', t => {
+  validate(t, source, truth);
+});
+
+test("converts methods correctly", (t) => {
   const source = `
 @Component
 export default class Component extends Vue {
-  onClick() {
+  private onClick() {
     console.log('Hello, world!')
   }
 
@@ -546,7 +543,7 @@ export default class Component extends Vue {
     return await sendCompute()
   }
 }
-  `
+  `;
 
   const truth = `
 import Vue from 'vue';
@@ -561,16 +558,16 @@ export default Vue.extend({
     },
   },
 });
-  `
-  
-  validate(t, source, truth)
-})
+  `;
 
-test('converts watch correctly', t => {
+  validate(t, source, truth);
+});
+
+test("converts watch correctly", (t) => {
   const source = `
 @Component
 export default class Component extends Vue {
-  
+
   @Prop({ required: true })
   loading!: boolean
 
@@ -581,7 +578,7 @@ export default class Component extends Vue {
     }
   }
 }
-  `
+  `;
 
   const truth = `
 import Vue from 'vue';
@@ -607,16 +604,16 @@ export default Vue.extend({
     },
   },
 });
-  `
-  
-  validate(t, source, truth)
-})
+  `;
 
-test('converts multiple watches correctly', t => {
+  validate(t, source, truth);
+});
+
+test("converts multiple watches correctly", (t) => {
   const source = `
 @Component
 export default class Component extends Vue {
-  
+
   @Prop({ required: true })
   enabled!: boolean
 
@@ -629,7 +626,7 @@ export default class Component extends Vue {
     console.log('Clicks: ' + this.clicks)
   }
 }
-  `
+  `;
 
   const truth = `
 import Vue from 'vue';
@@ -663,16 +660,16 @@ export default Vue.extend({
     },
   },
 });
-  `
-  
-  validate(t, source, truth)
-})
+  `;
 
-test('converts watch comments correctly', t => {
+  validate(t, source, truth);
+});
+
+test("converts watch comments correctly", (t) => {
   const source = `
 @Component
 export default class Component extends Vue {
-  
+
   @Prop({ required: true })
   loading!: boolean
 
@@ -686,7 +683,7 @@ export default class Component extends Vue {
     }
   }
 }
-  `
+  `;
 
   const truth = `
 import Vue from 'vue';
@@ -715,16 +712,16 @@ export default Vue.extend({
     },
   },
 });
-  `
-  
-  validate(t, source, truth)
-})
+  `;
 
-test('converts watch options correctly', t => {
+  validate(t, source, truth);
+});
+
+test("converts watch options correctly", (t) => {
   const source = `
 @Component
 export default class Component extends Vue {
-  
+
   @Prop({ required: true })
   loading!: boolean
 
@@ -738,7 +735,7 @@ export default class Component extends Vue {
     }
   }
 }
-  `
+  `;
 
   const truth = `
 import Vue from 'vue';
@@ -769,16 +766,16 @@ export default Vue.extend({
     },
   },
 });
-  `
-  
-  validate(t, source, truth)
-})
+  `;
 
-test('converts lifecycle methods correctly', t => {
+  validate(t, source, truth);
+});
+
+test("converts lifecycle methods correctly", (t) => {
   const source = `
 @Component
 export default class Component extends Vue {
-  
+
   created() {
     console.log('Hello, world!')
   }
@@ -787,7 +784,7 @@ export default class Component extends Vue {
     console.log('Goodbye, world.')
   }
 }
-  `
+  `;
 
   const truth = `
 import Vue from 'vue';
@@ -800,7 +797,133 @@ export default Vue.extend({
     console.log('Goodbye, world.')
   },
 });
-  `
-  
-  validate(t, source, truth)
-})
+  `;
+
+  validate(t, source, truth);
+});
+
+test("removes $refs! definitions correctly", (t) => {
+  const source = `
+@Component
+export default class Component extends Vue {
+  $refs!: {
+    fileInput: HTMLInputElement;
+  };
+  test: number = 5
+}
+  `;
+
+  const truth = `
+import Vue from 'vue';
+export default Vue.extend({
+  name: 'Component',
+  data() {
+    return {
+      test: 5 as number,
+    };
+  },
+});
+  `;
+
+  validate(t, source, truth);
+});
+
+test("handles @Getter decorators correctly", (t) => {
+  const source = `
+import { Vue, Component } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
+
+@Component()
+export default class Component extends Vue {
+  @Getter('exampleModule/exampleGetter') private readonly exampleGetter!: any
+  @Getter('exampleModule/secondExample') private readonly secondExample!: any
+  @Getter('anotherModule/anotherExample') private readonly anotherExample!: any
+  @Getter('anotherModule/renamedGetter') private readonly renamedVariable!: any
+}
+  `;
+
+  const truth = `
+import Vue from 'vue';
+import { mapGetters } from 'vuex';
+export default Vue.extend({
+  name: 'Component',
+  computed: {
+    ...mapGetters('exampleModule', ['exampleGetter', 'secondExample']),
+    ...mapGetters('anotherModule', ['anotherExample', { renamedVariable: 'renamedGetter' }]),
+  },
+});
+  `;
+
+  validate(t, source, truth);
+});
+
+test("handles @Action decorators correctly", (t) => {
+  const source = `
+import { Vue } from 'vue-property-decorator'
+import { Action } from 'vuex-class'
+
+@Component()
+export default class Component extends Vue {
+  @Action('exampleModule/exampleAction') private readonly exampleAction!: any
+  @Action('exampleModule/secondExampleAction') private readonly secondExampleAction!: any
+  @Action('anotherModule/action') private readonly action!: any
+  @Action('anotherModule/boundAction') private readonly actionVariable!: any
+
+  testing() {
+    console.log('test')
+  }
+}
+  `;
+
+  const truth = `
+import Vue from 'vue';
+import { mapActions } from 'vuex';
+export default Vue.extend({
+  name: 'Component',
+  methods: {
+    ...mapActions('exampleModule', ['exampleAction', 'secondExampleAction']),
+    ...mapActions('anotherModule', ['action', { actionVariable: 'boundAction' }]),
+    testing() {
+      console.log('test')
+    },
+  },
+});
+  `;
+
+  validate(t, source, truth);
+});
+
+test("handles @Mutation decorators correctly", (t) => {
+  const source = `
+import { Vue } from 'vue-property-decorator'
+import { Mutation } from 'vuex-class'
+
+@Component()
+export default class Component extends Vue {
+  @Mutation('exampleModule/exampleMutation') private readonly exampleMutation!: any
+  @Mutation('exampleModule/anotherMutation') private readonly anotherMutation!: any
+  @Action('exampleModule/exampleAction') private readonly exampleAction!: any
+
+  testing() {
+    console.log('test')
+  }
+}
+  `;
+
+  const truth = `
+import Vue from 'vue';
+import { mapMutations, mapActions } from 'vuex';
+export default Vue.extend({
+  name: 'Component',
+  methods: {
+    ...mapActions('exampleModule', ['exampleAction']),
+    ...mapMutations('exampleModule', ['exampleMutation', 'anotherMutation']),
+    testing() {
+      console.log('test')
+    },
+  },
+});
+  `;
+
+  validate(t, source, truth);
+});
