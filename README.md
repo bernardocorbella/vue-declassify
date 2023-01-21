@@ -17,8 +17,8 @@ I highly recommend running your linter with auto-fix functionality afterwards, a
 
 Here's the plan for the project:
 
-- [x] TypeScript components (*.ts files)
-- [x] Vue SFC components (*.vue files)
+- [x] TypeScript components (\*.ts files)
+- [x] Vue SFC components (\*.vue files)
 - [x] Imports
 - [x] `data`, in general
 - [x] `methods`, in general
@@ -29,6 +29,9 @@ Here's the plan for the project:
 - [x] `@Watch`
 - [ ] `@PropSync`
 - [x] JSDocs for all of the above
+- [x] `vuex-class` Getter
+- [x] `vuex-class` Action
+- [x] `vuex-class` Mutation
 
 I'm not currently planning to support `@Inject`, `@Provide`, `@InjectReactive`, and `@ProvideReactive`. Although, if you do need them, make an issue and I'll implement it.
 
@@ -50,14 +53,14 @@ Note that if you do not supply a return type for any one computed getter, your e
 
 ## Motivation
 
-I originally started writing Vue using libraries like `vue-class-component` and `vue-property-decorator` for a few reasons. I thought the class-based writing style was easier to read, and other engineers would find it more familiar. 
+I originally started writing Vue using libraries like `vue-class-component` and `vue-property-decorator` for a few reasons. I thought the class-based writing style was easier to read, and other engineers would find it more familiar.
 
 Unfortunately, class-style components have several drawbacks.
 
-1. Vetur's experimental template type checking feature only works if the the types are available to Vue. Class-based components do not make those types available, so you would have to define property types twice. This is a core feature of the framework and I don't want to have to dance around it *every time I write a component*.
+1. Vetur's experimental template type checking feature only works if the the types are available to Vue. Class-based components do not make those types available, so you would have to define property types twice. This is a core feature of the framework and I don't want to have to dance around it _every time I write a component_.
 
 2. Even when defined as classes, components do not behave like nor can they be treated as classes. You cannot extend a component because, while the operation is well-defined for classes, extending `<template>` or `<style>` tags is inherently undefined. This is confusing. Similarly, class-based components can have type parameters, but real component cannot - and it's better not to write them as such.
 
-3. It's an extra layer of indirection. When new engineers are on-boarded, they have learn that the "class" they're writing goes through *several* transformations: class-based Vue, object-based Vue, split by tags, and then finally TypeScript to JavaScript, etc. When introducing Vue, I've found removing that layer to be drastically simpler because people make fewer assumptions about how it works, and RTFM instead.
+3. It's an extra layer of indirection. When new engineers are on-boarded, they have learn that the "class" they're writing goes through _several_ transformations: class-based Vue, object-based Vue, split by tags, and then finally TypeScript to JavaScript, etc. When introducing Vue, I've found removing that layer to be drastically simpler because people make fewer assumptions about how it works, and RTFM instead.
 
 So, you can use `vue-declassify` to "de-class-ify" your TypeScript Vue components and simplify your code base while gaining additional type safety.

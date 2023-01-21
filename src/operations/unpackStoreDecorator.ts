@@ -8,7 +8,7 @@ export function unpackStoreDecorator(decorator: Decorator) {
   }
 
   if (!(decoratorArguments[0] instanceof StringLiteral)) {
-    throw new Error(`unpackGetterDecorator: First decorator argument isn't a string literal`);
+    throw new Error(`unpackGetterDecorator: First decorator argument isn't a string literal: ${decoratorArguments[0]}`);
   }
   const argument = decoratorArguments[0] as StringLiteral;
 

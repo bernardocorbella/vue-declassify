@@ -104,6 +104,8 @@ import Vue from 'vue'
 
 test("writes the class name as the component name", (t) => {
   const source = `
+import { Component, Vue } from 'vue-property-decorator';
+
 @Component
 export default class Component extends Vue {
 
@@ -122,6 +124,8 @@ export default Vue.extend({
 
 test("passes along configuration from the @Component decorator", (t) => {
   const source = `
+import { Component, Vue } from 'vue-property-decorator';
+
 @Component({
   components: {
     OtherComponent,
@@ -147,6 +151,8 @@ export default Vue.extend({
 
 test("converts props with primitive types correctly", (t) => {
   const source = `
+import { Component, Vue } from 'vue-property-decorator';
+
 @Component
 export default class Component extends Vue {
 
@@ -187,6 +193,8 @@ export default Vue.extend({
 
 test("converts prop options correctly", (t) => {
   const source = `
+import { Component, Vue } from 'vue-property-decorator';
+
 @Component
 export default class Component extends Vue {
 
@@ -241,6 +249,8 @@ export default Vue.extend({
 
 test("converts props with non-primitive types correctly", (t) => {
   const source = `
+import { Component, Vue } from 'vue-property-decorator';
+
 @Component
 export default class Component extends Vue {
 
@@ -296,6 +306,8 @@ export default Vue.extend({
 
 test("converts components with comments correctly", (t) => {
   const source = `
+import { Component, Vue } from 'vue-property-decorator';
+
 /**
  * This is my component!
  */
@@ -320,6 +332,8 @@ export default Vue.extend({
 
 test("converts props with comments correctly", (t) => {
   const source = `
+import { Component, Vue } from 'vue-property-decorator';
+
 @Component
 export default class Component extends Vue {
 
@@ -356,6 +370,8 @@ export default Vue.extend({
 
 test("converts simple data correctly", (t) => {
   const source = `
+import { Component, Vue } from 'vue-property-decorator';
+
 @Component
 export default class Component extends Vue {
   x = 5
@@ -383,6 +399,8 @@ export default Vue.extend({
 
 test("converts union-typed data correctly", (t) => {
   const source = `
+import { Component, Vue } from 'vue-property-decorator';
+
 @Component
 export default class Component extends Vue {
   x: string | null = null
@@ -406,6 +424,8 @@ export default Vue.extend({
 
 test("converts data comments correctly", (t) => {
   const source = `
+import { Component, Vue } from 'vue-property-decorator';
+
 @Component
 export default class Component extends Vue {
 
@@ -449,6 +469,8 @@ export default Vue.extend({
 
 test("converts computed getters correctly", (t) => {
   const source = `
+import { Component, Vue } from 'vue-property-decorator';
+
 @Component
 export default class Component extends Vue {
 
@@ -491,6 +513,8 @@ export default Vue.extend({
 
 test("converts computed properties correctly", (t) => {
   const source = `
+import { Component, Vue } from 'vue-property-decorator';
+
 @Component
 export default class Component extends Vue {
 
@@ -533,6 +557,8 @@ export default Vue.extend({
 
 test("converts methods correctly", (t) => {
   const source = `
+import { Component, Vue } from 'vue-property-decorator';
+
 @Component
 export default class Component extends Vue {
   private onClick() {
@@ -565,6 +591,8 @@ export default Vue.extend({
 
 test("converts watch correctly", (t) => {
   const source = `
+import { Component, Vue } from 'vue-property-decorator';
+
 @Component
 export default class Component extends Vue {
 
@@ -592,7 +620,6 @@ export default Vue.extend({
   },
   watch: {
     'loading': {
-      // @ts-ignore
       handler: 'executeAnimationOnLoading',
     },
   },
@@ -611,6 +638,8 @@ export default Vue.extend({
 
 test("converts multiple watches correctly", (t) => {
   const source = `
+import { Component, Vue } from 'vue-property-decorator';
+
 @Component
 export default class Component extends Vue {
 
@@ -645,11 +674,9 @@ export default Vue.extend({
   },
   watch: {
     'enabled': {
-      // @ts-ignore
       handler: 'logOnStatusChanged',
     },
     'clicks': {
-      // @ts-ignore
       handler: 'logOnStatusChanged',
     },
   },
@@ -667,6 +694,8 @@ export default Vue.extend({
 
 test("converts watch comments correctly", (t) => {
   const source = `
+import { Component, Vue } from 'vue-property-decorator';
+
 @Component
 export default class Component extends Vue {
 
@@ -697,7 +726,6 @@ export default Vue.extend({
   },
   watch: {
     'loading': {
-      // @ts-ignore
       handler: 'logOnLoading',
     },
   },
@@ -719,6 +747,8 @@ export default Vue.extend({
 
 test("converts watch options correctly", (t) => {
   const source = `
+import { Component, Vue } from 'vue-property-decorator';
+
 @Component
 export default class Component extends Vue {
 
@@ -749,7 +779,6 @@ export default Vue.extend({
   },
   watch: {
     'loading': {
-      // @ts-ignore
       handler: 'logOnLoading',
       immediate: true,
       deep: false,
@@ -773,6 +802,8 @@ export default Vue.extend({
 
 test("converts lifecycle methods correctly", (t) => {
   const source = `
+import { Component, Vue } from 'vue-property-decorator';
+
 @Component
 export default class Component extends Vue {
 
@@ -804,6 +835,8 @@ export default Vue.extend({
 
 test("removes $refs! definitions correctly", (t) => {
   const source = `
+import { Component, Vue } from 'vue-property-decorator';
+
 @Component
 export default class Component extends Vue {
   $refs!: {

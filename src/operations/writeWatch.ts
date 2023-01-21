@@ -18,7 +18,7 @@ export function writeWatch(
     .write("{")
     .newLine()
     .withIndentationLevel(1, () => {
-      writer.write("// @ts-ignore").newLine().write("handler:").space().write(`'${watch.method}'`).write(",").newLine();
+      writer.write("handler:").space().write(`'${watch.method}'`).write(",").newLine();
 
       if (watch.immediate) {
         writer.write(watch.immediate).write(",").newLine();

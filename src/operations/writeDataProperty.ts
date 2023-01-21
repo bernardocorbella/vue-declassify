@@ -3,11 +3,17 @@ import { writeDocs } from "./writeDocs";
 
 export function writeDataProperty(writer: ts.CodeBlockWriter, property: ts.PropertyDeclaration) {
   writeDocs(writer, property.getJsDocs());
-  writer.write(property.getName()).write(":").space().write(property.getInitializerOrThrow().getText());
+  const initializer = property.getInitializer();
+
+  writer
+    .write(property.getName())
+    .write(":")
+    .space()
+    .write(initializer?.getText() ?? "undefined");
 
   const type = property.getTypeNode();
 
-  if (type) {
+  if (type && initializer) {
     writer.space().write("as").space().write(type.getText());
   }
 

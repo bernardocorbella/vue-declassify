@@ -14,23 +14,42 @@ export function declassify(project: Project, code: string, mode: "ts" | "vue"): 
   }
 }
 
-function declassifyVue(project: Project, code: string) {
+function extractTsCode(code: string): string {
   const match = code.match(/<script[^>]*>\s*(?<code>.*)<\/script>/s);
 
   if (!match || !match.groups) {
-    throw new Error("Vue file doesn't seem to have a valid <script> tag.");
+    throw new Error(`extractTsCode: provided string has no <script> tag.`);
   }
 
-  const tsCode = match.groups["code"];
+  return match.groups["code"];
+}
+
+function declassifyVue(project: Project, code: string) {
+  const tsCode = extractTsCode(code);
+
   return code.replace(tsCode, declassifyTypeScript(project, tsCode));
 }
 
 function declassifyTypeScript(project: Project, code: string) {
+  const importsToRemove = ["vue-class-component", "vue-property-decorator", "vuex-class"];
   const source = project.createSourceFile("test.ts", code, {
     overwrite: true,
   });
+  let shouldDeclassify = false;
 
-  imports.remove(source, "vue-class-component", "vue-property-decorator", "vuex-class");
+  for (const i of importsToRemove) {
+    if (imports.find(source, i) !== undefined) {
+      shouldDeclassify = true;
+      break;
+    }
+  }
+
+  if (!shouldDeclassify) {
+    console.log("Skipping file");
+    return source.getFullText();
+  }
+
+  imports.remove(source, ...importsToRemove);
   imports.ensure(source, "vue", { default: "Vue" });
   classToObject.classToObject(source);
   return source.getFullText();
