@@ -1,10 +1,13 @@
 import { Project } from "ts-morph";
 
 import * as imports from "./operations/imports";
-import * as vue from "./operations/vue_object";
 import * as classToObject from "./operations/classToObject";
 
-export function declassify(project: Project, code: string, mode: "ts" | "vue"): string {
+export function declassify(
+  project: Project,
+  code: string,
+  mode: "ts" | "vue",
+): string {
   switch (mode) {
     case "vue":
       return declassifyVue(project, code);
@@ -31,7 +34,11 @@ function declassifyVue(project: Project, code: string) {
 }
 
 function declassifyTypeScript(project: Project, code: string) {
-  const importsToRemove = ["vue-class-component", "vue-property-decorator", "vuex-class"];
+  const importsToRemove = [
+    "vue-class-component",
+    "vue-property-decorator",
+    "vuex-class",
+  ];
   const source = project.createSourceFile("test.ts", code, {
     overwrite: true,
   });
@@ -50,7 +57,9 @@ function declassifyTypeScript(project: Project, code: string) {
   }
 
   imports.remove(source, ...importsToRemove);
-  imports.ensure(source, "vue", { default: "Vue" });
+  imports.ensure(source, "@vue/composition-api", {
+    named: ["defineComponent"],
+  });
   classToObject.classToObject(source);
   return source.getFullText();
 }

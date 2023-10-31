@@ -38,7 +38,7 @@ export function classToObject(source: ts.SourceFile) {
     },
     expression: (writer) => {
       writer
-        .writeLine("Vue.extend({")
+        .writeLine("defineComponent({")
         .withIndentationLevel(1, () => {
           writeName(writer, declaration);
           writeConfig(writer, decorator);
@@ -46,7 +46,9 @@ export function classToObject(source: ts.SourceFile) {
           writeData(writer, data);
           callbacks.push(...writeComputed(writer, computed, storeGetters));
           writeWatches(writer, watches);
-          callbacks.push(...writeMethods(writer, methods, storeActions, storeMutations));
+          callbacks.push(
+            ...writeMethods(writer, methods, storeActions, storeMutations),
+          );
         })
         .write("})");
     },

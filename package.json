@@ -29,7 +29,7 @@
   "scripts": {
     "dev": "ts-node ./src/cli.ts",
     "clean": "rimraf ./dist/ ./exec/",
-    "build": "npm run clean && tsc",
+    "build": "npm run clean && tsc && chmod u+x dist/cli.js",
     "prepublish": "npm run build",
     "test": "nyc ava --verbose",
     "test:watch": "ava --watch",
