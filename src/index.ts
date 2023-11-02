@@ -57,7 +57,7 @@ function declassifyTypeScript(project: Project, code: string) {
   }
 
   imports.remove(source, ...importsToRemove);
-  imports.ensure(source, "@vue/composition-api", {
+  imports.ensure(source, "vue", {
     named: ["defineComponent"],
   });
   classToObject.classToObject(source);

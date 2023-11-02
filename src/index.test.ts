@@ -69,7 +69,7 @@ div {
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'SFCComponent',
 });
@@ -92,7 +92,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
   `;
 
   const truth = `
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
   `;
 
   validate(t, source, truth);
@@ -100,7 +100,7 @@ import { defineComponent } from '@vue/composition-api';
 
 test("only adds the Vue import if necessary", (t) => {
   const source = `
-import { defineComponent } from '@vue/composition-api'
+import { defineComponent } from 'vue'
   `;
 
   const truth = source;
@@ -118,7 +118,7 @@ export default class Component extends Vue {
   `;
 
   const truth = `
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'Component',
 });
@@ -142,7 +142,7 @@ export default class Component extends Vue {
   `;
 
   const truth = `
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'Component',
   components: {
@@ -173,7 +173,7 @@ export default class Component extends Vue {
   `;
 
   const truth = `
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'Component',
   props: {
@@ -221,7 +221,7 @@ export default class Component extends Vue {
   `;
 
   const truth = `
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'Component',
   props: {
@@ -278,8 +278,7 @@ export default class Component extends Vue {
   `;
 
   const truth = `
-import { defineComponent } from '@vue/composition-api';
-import { PropType } from 'vue';
+import { defineComponent, PropType } from 'vue';
 export default defineComponent({
   name: 'Component',
   props: {
@@ -324,7 +323,7 @@ export default class Component extends Vue {
   `;
 
   const truth = `
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 /**
  * This is my component!
  */
@@ -354,7 +353,7 @@ export default class Component extends Vue {
   `;
 
   const truth = `
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'Component',
   props: {
@@ -387,7 +386,7 @@ export default class Component extends Vue {
   `;
 
   const truth = `
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'Component',
   data() {
@@ -414,7 +413,7 @@ export default class Component extends Vue {
   `;
 
   const truth = `
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'Component',
   data() {
@@ -450,7 +449,7 @@ export default class Component extends Vue {
   `;
 
   const truth = `
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'Component',
   data() {
@@ -494,8 +493,7 @@ export default class Component extends Vue {
   `;
 
   const truth = `
-import { defineComponent } from '@vue/composition-api';
-import { PropType } from 'vue';
+import { defineComponent, PropType } from 'vue';
 export default defineComponent({
   name: 'Component',
   props: {
@@ -538,7 +536,7 @@ export default class Component extends Vue {
   `;
 
   const truth = `
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'Component',
   data() {
@@ -579,7 +577,7 @@ export default class Component extends Vue {
   `;
 
   const truth = `
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'Component',
   methods: {
@@ -616,7 +614,7 @@ export default class Component extends Vue {
   `;
 
   const truth = `
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'Component',
   props: {
@@ -665,7 +663,7 @@ export default class Component extends Vue {
   `;
 
   const truth = `
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'Component',
   props: {
@@ -722,7 +720,7 @@ export default class Component extends Vue {
   `;
 
   const truth = `
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'Component',
   props: {
@@ -775,7 +773,7 @@ export default class Component extends Vue {
   `;
 
   const truth = `
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'Component',
   props: {
@@ -825,7 +823,7 @@ export default class Component extends Vue {
   `;
 
   const truth = `
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'Component',
   created() {
@@ -854,7 +852,7 @@ export default class Component extends Vue {
   `;
 
   const truth = `
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'Component',
   data() {
@@ -883,7 +881,7 @@ export default class Component extends Vue {
   `;
 
   const truth = `
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
 export default defineComponent({
   name: 'Component',
@@ -916,7 +914,7 @@ export default class Component extends Vue {
   `;
 
   const truth = `
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 import { mapActions } from 'vuex';
 export default defineComponent({
   name: 'Component',
@@ -951,7 +949,7 @@ export default class Component extends Vue {
   `;
 
   const truth = `
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from 'vue';
 import { mapMutations, mapActions } from 'vuex';
 export default defineComponent({
   name: 'Component',
