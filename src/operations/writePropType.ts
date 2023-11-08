@@ -2,7 +2,10 @@ import * as ts from "ts-morph";
 import * as imports from "./imports";
 import { PostprocessCallback } from "./interface";
 
-export function writePropType(writer: ts.CodeBlockWriter, declaration: ts.PropertyDeclaration): PostprocessCallback[] {
+export function writePropType(
+  writer: ts.CodeBlockWriter,
+  declaration: ts.PropertyDeclaration,
+): PostprocessCallback[] {
   const callbacks: PostprocessCallback[] = [];
   const type = declaration.getType();
   writer.write("type: ");
@@ -41,7 +44,7 @@ export function writePropType(writer: ts.CodeBlockWriter, declaration: ts.Proper
 
     // Add PropType to the imports afterwards, since we just used it.
     callbacks.push((source) => {
-      imports.ensure(source, "vue", {
+      imports.ensure(source, "@vue/composition-api", {
         named: ["PropType"],
       });
     });
